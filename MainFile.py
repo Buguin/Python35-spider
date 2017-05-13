@@ -13,11 +13,6 @@ url = 'http://news.dbanotes.net'
 
 queue.append(url)
 cnt = 0
-
-# # timeout in seconds
-# timeout = 2
-# socket.setdefaulttimeout(timeout)
-
 while queue:
     url = queue.popleft()
     visited |= {url}
@@ -33,8 +28,8 @@ while queue:
     except:
         continue
 
-linkre = re.compile('href="(.+?)"')
-for x in linkre.findall(data):
-    if 'http' in x and x not in visited:
-        queue.append(x)
-        print('加入队列 ----> ' + x)
+    linkre = re.compile(r'class="title".+?href="(.+?)"')
+    for x in linkre.findall(data):
+        if 'http' in x and x not in visited:
+            queue.append(x)
+            print('加入队列 ----> ' + x)
