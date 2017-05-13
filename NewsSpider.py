@@ -21,7 +21,16 @@ def myopener(head={
     opener.addheaders = header
     return opener
 
+
+# save file
+def savefile(data):
+    save_path = 'D:\\temp.out'
+    f_obj = open(save_path, 'wb')  # wb 表示打开方式
+    f_obj.write(data)
+    f_obj.close()
+
 oper = myopener()
 uop = oper.open('http://www.baidu.com/', timeout=1000)
 data = uop.read()
 print(data.decode())
+savefile(data)
