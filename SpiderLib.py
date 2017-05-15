@@ -1,12 +1,12 @@
 # -*- codeing:utf-8 -*-
+import http.cookiejar
+import urllib
+import gzip
+
 __author__ = 'Buguin'
 
-import urllib.request
-import http.cookiejar
 
-
-# head: dict of header
-def myopener(head={
+def urllib_opener(head={
     'Connection': 'Keep-Alive',
     'Accept': 'text/html, application/xhtml+xml, */*',
     'Accept-Language': 'en-US,en;q=0.8,zh-Hans-CN;q=0.5,zh-Hans;q=0.3',
@@ -23,14 +23,20 @@ def myopener(head={
 
 
 # save file
-def savefile(data):
-    save_path = 'D:\\temp.out'
+def save_file(data, save_path):
     f_obj = open(save_path, 'wb')  # wb 表示打开方式
     f_obj.write(data)
     f_obj.close()
 
-oper = myopener()
-uop = oper.open('http://www.baidu.com/', timeout=1000)
-data = uop.read()
-print(data.decode())
-savefile(data)
+
+def unzip(data):
+    try:
+        print('正在解压。。。')
+        data = gzip.decompress(data)
+        print('解压完毕！')
+    except:
+        print('未经压缩，无需解压')
+    return data
+
+
+
