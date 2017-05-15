@@ -2,6 +2,7 @@
 from SpiderLib import urllib_opener
 import requests
 from bs4 import BeautifulSoup
+import time
 
 __author__ = 'Buguin'
 
@@ -23,7 +24,19 @@ picture_list = class_all.find_all('a')
 for a_tag in picture_list:
     title = a_tag.get_text()
     href = a_tag['href']
-    print(title, href)
+    picture_html = requests.get(href, headers=headers, timeout=2)
+    picture_soup = BeautifulSoup(picture_html.text, 'html.parser')
+    # print(title, href)
+    max_span = picture_soup.find('div', class_='pagenavi').find_all('span')[-2].get_text()
+    print(max_span)
+    time.sleep(0.06)  # 睡眠0.06秒，服务器端设置了响应间隔
+    for page in range(1, int(max_span)+1):
+        if page == 1:
+            page_url = href
+        else:
+            page_url = href + '/' + str(page)
+        print(page_url)
+
 # print(class_all)
 # for li in soup:
 #     print(li)
