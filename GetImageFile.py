@@ -1,5 +1,4 @@
 # -*- codeing:utf-8 -*-
-from SpiderLib import urllib_opener
 from SpiderLib import *
 import requests
 from bs4 import BeautifulSoup
@@ -19,7 +18,8 @@ headers = {
 # start_html = opener.open(url_all, timeout=2)
 # html_data = start_html.read()
 # print(html_data.decode())
-start_html = requests.get(url_all, headers=headers, timeout=2)
+start_html = request_opener(url_all)
+# start_html = requests.get(url_all, headers=headers, timeout=2)
 soup = BeautifulSoup(start_html.text, 'html.parser')
 class_all = soup.find('div', class_='all')
 picture_list = class_all.find_all('a')
@@ -34,7 +34,8 @@ for a_tag in picture_list:
     os.chdir(picture_path)  # cd to the path, created before
     # get picture url
     href = a_tag['href']
-    picture_all_html = requests.get(href, headers=headers, timeout=2)
+    picture_all_html = request_opener(href)
+    # picture_all_html = requests.get(href, headers=headers, timeout=2)
     picture_all_soup = BeautifulSoup(picture_all_html.text, 'html.parser')
     max_span = picture_all_soup.find('div', class_='pagenavi').find_all('span')[-2].get_text()
     print(max_span)
@@ -46,13 +47,15 @@ for a_tag in picture_list:
         else:
             page_url = href + '/' + str(page)
         print(page_url)
-        img_html = requests.get(page_url, headers=headers, timeout=2)
+        img_html = request_opener(page_url)
+        # img_html = requests.get(page_url, headers=headers, timeout=2)
         img_soup = BeautifulSoup(img_html.text, 'html.parser')
         img_main = img_soup.find('div', class_='main-image')
         img_url = img_main.find('img')['src']
         print(img_url)
         img_name = img_url[-9:-4]
-        img = requests.get(img_url, headers=headers, timeout=2)
+        img = request_opener(img_url)
+        # img = requests.get(img_url, headers=headers, timeout=2)
         img_file = open(img_name + '.jpg', 'ab')
         img_file.write(img.content)  # use content to save img
         img_file.close()

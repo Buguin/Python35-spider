@@ -6,7 +6,7 @@ import os
 __author__ = 'Buguin'
 
 
-class ImgSpider():
+class ImgSpider:
 
     def all_url(self, url):
         html = self.request(url)
