@@ -1,14 +1,17 @@
 # -*- codeing:utf-8 -*-
-from SpiderLib import *
-import requests
+# from SpiderLib import *
 from bs4 import BeautifulSoup
+from DataFile.ImgSpider import *
+from DataFile.CommTools import *
 import time
 import os
 
 __author__ = 'Buguin'
 
 url_all = 'http://www.mzitu.com/all'
-start_html = request_opener(url_all)
+
+img_spider = ImgSpider()
+start_html = img_spider.rq_rdheaders_opener(url_all)
 # start_html = requests.get(url_all, headers=headers, timeout=2)
 soup = BeautifulSoup(start_html.text, 'html.parser')
 class_all = soup.find('div', class_='all')
@@ -24,7 +27,7 @@ for a_tag in picture_list:
     os.chdir(picture_path)  # cd to the path, created before
     # get picture url
     href = a_tag['href']
-    picture_all_html = request_opener(href)
+    picture_all_html = img_spider.rq_rdheaders_opener(href)
     # picture_all_html = requests.get(href, headers=headers, timeout=2)
     picture_all_soup = BeautifulSoup(picture_all_html.text, 'html.parser')
     max_span = picture_all_soup.find('div', class_='pagenavi').find_all('span')[-2].get_text()
@@ -37,19 +40,14 @@ for a_tag in picture_list:
         else:
             page_url = href + '/' + str(page)
         print(page_url)
-        img_html = request_opener(page_url)
+        img_html = img_spider.rq_rdheaders_opener(page_url)
         # img_html = requests.get(page_url, headers=headers, timeout=2)
         img_soup = BeautifulSoup(img_html.text, 'html.parser')
         img_main = img_soup.find('div', class_='main-image')
         img_url = img_main.find('img')['src']
         print(img_url)
         img_name = img_url[-9:-4]
-        img = request_opener(img_url)
-        # img = requests.get(img_url, headers=headers, timeout=2)
+        img = img_spider.rq_rdheaders_opener(img_url)
         img_file = open(img_name + '.jpg', 'ab')
         img_file.write(img.content)  # use content to save img
         img_file.close()
-
-# print(class_all)
-# for li in soup:
-#     print(li)
