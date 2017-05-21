@@ -11,6 +11,7 @@ __author__ = 'Buguin'
 class ImgSpider:
 
     def __init__(self):
+        self.ip_list = []
         self.user_agent_list = [
             "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1",
             "Mozilla/5.0 (X11; CrOS i686 2268.111.0) AppleWebKit/536.11 (KHTML, like Gecko) Chrome/20.0.1132.57 Safari/536.11",
@@ -35,6 +36,8 @@ class ImgSpider:
     def rq_rdheaders_opener(self, url, timeout=2):
         random_user_agent = random.choice(self.user_agent_list)
         headers = {'User-Agent': random_user_agent}
-        start_html = requests.get(url, headers=headers, timeout=timeout)
+        ip_num = random.choice(self.ip_list)
+        proxy = {'http': ip_num}
+        start_html = requests.get(url, headers=headers, proxies=proxy, timeout=timeout)
         return start_html
 

@@ -1,5 +1,4 @@
 # -*- codeing:utf-8 -*-
-# from SpiderLib import *
 from bs4 import BeautifulSoup
 from DataFile.ImgSpider import *
 from DataFile.CommTools import *
@@ -9,6 +8,7 @@ import os
 __author__ = 'Buguin'
 
 url_all = 'http://www.mzitu.com/all'
+proxy_url = 'http://www.xicidaili.com/nn/'
 
 img_spider = ImgSpider()
 start_html = img_spider.rq_rdheaders_opener(url_all)
